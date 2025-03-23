@@ -1,31 +1,35 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYmMiLCJleHAiOjE3NDI3Nzc0MTV9.oDeJ6b9V9PMxFI6eEI_HqU56uJvYxKGTvQK76SrGqrs
+
 ### Verbo GET – listar todos
 GET http://localhost:8000/produtos/ HTTP/1.1
+Authorization: Bearer {{token}}
 
 ### Verbo GET – listar um
 GET http://localhost:8000/produtos/10 HTTP/1.1
+Authorization: Bearer {{token}}
 
 ### Verbo POST – adicionar
-### Verbo POST – adicionar
 POST http://127.0.0.1:8000/produtos/ HTTP/1.1
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "nome": "Nome do Produto",
-    "descricao": "Descrição do Produto",
-    "valor_unitario": 0.0,
-    "foto": "URL da Foto"
+    "nome": "Pastel de Pizza",
+    "descricao": "Pastel de frango moído",
+    "valor_unitario": 20.0
 }
 
 ### Verbo PUT – atualiza
-PUT http://127.0.0.1:8000/produtos/2 HTTP/1.1
+PUT http://127.0.0.1:8000/produtos/6 HTTP/1.1
+Authorization: Bearer {{token}}
 content-type: application/json
 
 {
-    "nome": "Nome do Produto",
-    "descricao": "Descrição do Produto",
-    "valor_unitario": 0.0,
-    "foto": "URL da Foto"
+    "nome": "Pastel de Carne, Queijo e Ovo",
+    "descricao": "Pastel de carne moída, queijo e ovo",
+    "valor_unitario": 50.0
 }
 
 ### Verbo DELETE - excluir
-DELETE http://127.0.0.1:8000/produtos/3 HTTP/1.1
+DELETE http://127.0.0.1:8000/produtos/1 HTTP/1.1
+Authorization: Bearer {{token}}

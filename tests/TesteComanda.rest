@@ -1,7 +1,7 @@
-@token = eyJhbGciOiJIUzI1cwMTd9.UGVKOrjcoc4ZS5gQ42VKld11jXKMGX-ikYad4-vuT3w
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYmMiLCJleHAiOjE3NDI3Nzc0MTV9.oDeJ6b9V9PMxFI6eEI_HqU56uJvYxKGTvQK76SrGqrs
 
 ### Verbo GET – filtrar por id
-GET http://localhost:8000/comanda/1 HTTP/1.1
+GET http://localhost:8000/comanda/2 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Verbo GET – filtrar por status
@@ -14,10 +14,10 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "comanda": "1092",
-    "data_hora": "2023-10-02",
+    "comanda": "12345",
+    "data_hora": "2025-03-23",
     "status": 0,
-    "funcionario_id": 1
+    "funcionario_id": 3
     // "cliente_id": 0
 }
 
@@ -41,15 +41,15 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "comanda_id": 1,
-    "produto_id": 1,
+    "comanda_id": 2,
+    "produto_id": 4,
     "funcionario_id": 2,
     "quantidade": 15,
     "valor_unitario": 1.90
 }
 
 ### Verbo GET – listar itens comanda - comanda_id
-GET http://localhost:8000/comanda/1/item HTTP/1.1
+GET http://localhost:8000/comanda/2/item HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Verbo PUT – edita item comanda - comanda_id - id_comanda_produto
@@ -58,7 +58,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "id_comanda_produto": 1,
+    "id_comanda_produto": 3,
     "comanda_id": 0,
     "produto_id": 0,
     "funcionario_id": 1,
@@ -67,5 +67,5 @@ Content-Type: application/json
 }
 
 ### Verbo GET – Retorna o valor total da comanda - comanda_id
-GET http://localhost:8000/comandas/1 HTTP/1.1
+GET http://localhost:8000/comandas/1/total HTTP/1.1
 Authorization: Bearer {{token}}

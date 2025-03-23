@@ -1,5 +1,4 @@
-@token =
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYmMiLCJleHAiOjE3MTIwODcwMTd9.UGVKOrjcoc4ZS5gQ42VKld11jXKMGX-ikYad4-vuT3w
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYmMiLCJleHAiOjE3NDI3Nzc0MTV9.oDeJ6b9V9PMxFI6eEI_HqU56uJvYxKGTvQK76SrGqrs
 
 ### ao logar, gera um token que deve ser usado para acessar as rotas da API
 curl -X 'POST' 'http://127.0.0.1:8000/token' \
@@ -17,33 +16,37 @@ GET http://localhost:8000/funcionario/ HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Verbo GET – listar um
-GET http://localhost:8000/funcionario/10 HTTP/1.1
+GET http://localhost:8000/funcionario/2 HTTP/1.1
+Authorization: Bearer {{token}}
 
 ### Verbo POST – adicionar
 POST http://127.0.0.1:8000/funcionario/ HTTP/1.1
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
     "nome": "Vinicius Kunzler",
     "matricula": "lu12353",
-    "cpf": "1334223444",
+    "cpf": "1334223449",
     "telefone": "tel2383738",
     "grupo": 1,
     "senha": "123456"
 }
 
 ### Verbo PUT – atualiza
-PUT http://127.0.0.1:8000/funcionario/2 HTTP/1.1
+PUT http://127.0.0.1:8000/funcionario/4 HTTP/1.1
+Authorization: Bearer {{token}}
 content-type: application/json
 
 {
-    "nome" : "Vinicius Kunzler", 
+    "nome" : "Vinicius Kunzlarrrrrrr", 
     "matricula" : "vini12353",
-    "cpf" : "1",
+    "cpf" : "1334223449",
     "telefone" : "tel2383738", 
     "grupo" : 1,
     "senha" : "123456"
 }
 
 ### Verbo DELETE - excluir
-DELETE http://127.0.0.1:8000/funcionario/3 HTTP/1.1
+DELETE http://127.0.0.1:8000/funcionario/4 HTTP/1.1
+Authorization: Bearer {{token}}

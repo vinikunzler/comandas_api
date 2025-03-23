@@ -83,6 +83,32 @@ async def post_comanda(corpo: Comanda):
     finally:
         session.close()
 
+# Edita Comanda - se status == 2, cancela
+@router.put("/comanda", tags=["Comanda"])
+async def put_comanda(corpo: Comanda):
+    try:
+        session = db.Session()
+        # busca os dados atuais da comanda
+        dados = session.query(ComandaDB).filter(ComandaDB.id_comanda == corpo.id_comanda).one()
+        # se status == 2, cancela
+        if corpo.status == 2:
+            dados.status = corpo.status
+        # edita
+        else:
+            dados.comanda = corpo.comanda
+            dados.data_hora = corpo.data_hora
+            dados.status = corpo.status
+            dados.funcionario_id = corpo.funcionario_id
+            dados.cliente_id = corpo.cliente_id
+        session.add(dados)
+        session.commit()
+        return {"id": dados.id_comanda}, 200
+    except Exception as e:
+        session.rollback()
+        return {"erro": str(e)}, 400
+    finally:
+        session.close()
+
 # Adiciona item na Comanda
 @router.post("/comanda/item", tags=["Comanda"])
 async def post_comanda_item(corpo: ComandaProdutos):
@@ -107,6 +133,7 @@ async def post_comanda_item(corpo: ComandaProdutos):
 async def get_comanda_item(comanda_id: int):
     try:
         session = db.Session()
+        print(comanda_id)
         # busca todos os itens da comanda informada
         aux_dados = (
             session.query(ComandaProdutoDB, FuncionarioDB, ProdutoDB)
@@ -114,7 +141,6 @@ async def get_comanda_item(comanda_id: int):
             .join(FuncionarioDB, FuncionarioDB.id_funcionario == ComandaProdutoDB.funcionario_id, isouter=False)
             .join(ProdutoDB, ProdutoDB.id_produto == ComandaProdutoDB.produto_id, isouter=False)
             .filter(ComandaProdutoDB.comanda_id == comanda_id)
-            .order_by(ComandaProdutoDB.quantidade)
             .all()
         )
         # monta o json com o retorno das três tabelas
@@ -126,6 +152,8 @@ async def get_comanda_item(comanda_id: int):
         return {"erro": str(e)}, 400
     finally:
         session.close()
+
+
 
 # Edita item na Comanda - se zero exclui
 @router.put("/comanda/item", tags=["Comanda"])

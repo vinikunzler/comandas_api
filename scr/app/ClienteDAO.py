@@ -1,11 +1,14 @@
-from fastapi import APIRouter, HTTPException
+# AUTOR: VINICIUS KUNZLER
+
+from fastapi import APIRouter, HTTPException, Depends
 from domain.entities.Cliente import Cliente
+from security import get_current_active_user, User
 
 # import da persistência
 import db
 from infra.orm.ClienteModel import ClienteDB
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(get_current_active_user)])
 
 # Helper function to check for duplicate CPF
 def is_cpf_duplicate(cpf: str, session) -> bool:
@@ -27,7 +30,7 @@ async def get_cliente():
 async def get_cliente(id: int):
     session = db.Session()
     try:
-        cliente = session.query(ClienteDB).filter(ClienteDB.id == id).first()
+        cliente = session.query(ClienteDB).filter(ClienteDB.id_cliente == id).first()
         if cliente is None:
             raise HTTPException(status_code=404, detail="Cliente not found")
         return cliente, 200
@@ -46,15 +49,14 @@ async def post_cliente(corpo: Cliente):
         
         # cria um novo objeto com os dados da requisição
         novo_cliente = ClienteDB(
+            id_cliente=None,  # Assuming the database will auto-generate this value
             nome=corpo.nome,
             cpf=corpo.cpf,
-            telefone=corpo.telefone,
-            grupo=corpo.grupo,
-            senha=corpo.senha
+            telefone=corpo.telefone
         )
         session.add(novo_cliente)
         session.commit()
-        return {"id": novo_cliente.id}, 200
+        return {"id": novo_cliente.id_cliente}, 200
     except Exception as e:
         session.rollback()
         return {"erro": str(e)}, 400
@@ -65,7 +67,7 @@ async def post_cliente(corpo: Cliente):
 async def put_cliente(id: int, corpo: Cliente):
     session = db.Session()
     try:
-        cliente = session.query(ClienteDB).filter(ClienteDB.id == id).first()
+        cliente = session.query(ClienteDB).filter(ClienteDB.id_cliente == id).first()
         if cliente is None:
             raise HTTPException(status_code=404, detail="Cliente not found")
         
@@ -75,8 +77,6 @@ async def put_cliente(id: int, corpo: Cliente):
         cliente.nome = corpo.nome
         cliente.cpf = corpo.cpf
         cliente.telefone = corpo.telefone
-        cliente.grupo = corpo.grupo
-        cliente.senha = corpo.senha
         
         session.commit()
         return {"msg": "put executado", "cliente": corpo}, 200
@@ -90,7 +90,7 @@ async def put_cliente(id: int, corpo: Cliente):
 async def delete_cliente(id: int):
     session = db.Session()
     try:
-        cliente = session.query(ClienteDB).filter(ClienteDB.id == id).first()
+        cliente = session.query(ClienteDB).filter(ClienteDB.id_cliente == id).first()
         if cliente is None:
             raise HTTPException(status_code=404, detail="Cliente not found")
         
