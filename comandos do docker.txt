@@ -1,0 +1,6 @@
+docker build -t comanda-api -f Dockerfile .
+docker tag comanda-api viniciuskunzler/comanda-api
+docker push viniciuskunzler/comanda-api
+docker run -d -it --name comanda-api -p 4443:4443 viniciuskunzler/comanda-api
+
+docker compose up -d
